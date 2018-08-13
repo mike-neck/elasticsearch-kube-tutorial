@@ -179,26 +179,37 @@ $ kubectl create cm filebeat-config --from-file=filebeat-config.yml
 
 
 ```yaml
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: logstash
+  labels:
+    app: logstash
 spec:
-  containers:
-    - image: docker.elastic.co/logstash/logstash:6.3.2
-      name: logstash
-      ports:
-        - containerPort: 5044
-          name: lumberjack
-          protocol: TCP
-      volumeMounts:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logstash
+  template:
+    metadata:
+      labels:
+        app: logstash
+    spec:
+      containers:
+        - image: docker.elastic.co/logstash/logstash:6.3.2
+          name: logstash
+          ports:
+            - containerPort: 5044
+              name: lumberjack
+              protocol: TCP
+          volumeMounts:
+            - name: logstash-config-volume
+              mountPath: /config
+          command: [bash, -c, /usr/share/logstash/bin/logstash, -f, /config/logstash.config]
+      volumes:
         - name: logstash-config-volume
-          mountPath: /config
-      command: [bash, -c, /usr/share/logstash/bin/logstash, -f, /config/logstash.config]
-  volumes:
-    - name: logstash-config-volume
-      configMap:
-        name: logstash-config
+          configMap:
+            name: logstash-config
 ```
 
 
