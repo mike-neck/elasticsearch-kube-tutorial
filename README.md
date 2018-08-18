@@ -176,8 +176,6 @@ $ kubectl create cm filebeat-config --from-file=filebeat-config.yml
 
 ### コンテナの立ち上げ
 
-
-
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -210,7 +208,56 @@ spec:
         - name: logstash-config-volume
           configMap:
             name: logstash-config
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: filebeat
+  labels:
+    app: filebeat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: filebeat
+  template:
+    metadata:
+      labels:
+        app: filebeat
+    spec:
+      containers:
+        - name: filebeat
+          image: docker.elastic.co/beats/filebeat:6.3.2
+          volumeMounts:
+            - name: filebeat-config-volume
+              mountPath: /config
+            - name: log-files
+              mountPath: /logfile
+          command: [bash, -c /usr/share/filebeat/filebeat, -c, /config/filebeat-config.yml, -d, "publish"]
+      volumes:
+        - name: filebeat-config-volume
+          configMap:
+            name: filebeat-config
+        - name: log-files
+          hostPath:
+            path: /path/to/log
+            type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: logstash
+spec:
+  ports:
+   - port: 5044
+ selector:
+   app: logstash
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: filebeat
+selector:
+  app: filebeat
 ```
-
-
 
