@@ -28,38 +28,6 @@ spec:
         configMap:
           name: logstash-config
 ---
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: filebeat
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: filebeat
-  template:
-    metadata:
-      labels:
-        app: filebeat
-    spec:
-      containers:
-      - name: filebeat
-        image: docker.elastic.co/beats/filebeat:6.3.2
-        volumeMounts:
-        - name: filebeat-config-volume
-          mountPath: /config
-        - name: log-files
-          mountPath: /logfile
-        command: [/usr/share/filebeat/filebeat, -c, /config/filebeat-config.yml, -d, "publish"]
-      volumes:
-      - name: filebeat-config-volume
-        configMap:
-          name: filebeat-config
-      - name: log-files
-        hostPath:
-          path: /path/to/log
-          type: Directory
----
 apiVersion: v1
 kind: Service
 metadata:
