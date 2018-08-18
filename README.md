@@ -341,3 +341,13 @@ $ kubectl logs  logstash-7cd4746dcd-xqt5k | grep -v "logstash."
     ]
 }
 ```
+
+##### 片付け
+
+deployment と service を削除する
+
+```shellsession
+$ kubectl delete deployment filebeat
+$ kubectl delete service logstash
+$ kubectl delete deployment logstash
+```
