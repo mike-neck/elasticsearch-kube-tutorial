@@ -261,3 +261,9 @@ selector:
   app: filebeat
 ```
 
+このファイルを `filebeat-logstash.yml` としておき、次のコマンドでこのディレクトリーで使えるようにする
+
+```shellsession
+$ sed -e "s+/path/to/log+`pwd`/log-files+g" filebeat-logstash.yml > filebeat-logstash-service.yml
+```
+
