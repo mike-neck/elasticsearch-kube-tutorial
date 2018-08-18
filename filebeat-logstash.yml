@@ -3,16 +3,16 @@ kind: Deployment
 metadata:
   name: logstash
   labels:
-    app: logstash
+     app:logstash
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: logstash
+       app:logstash
   template:
     metadata:
       labels:
-        app: logstash
+         app:logstash
     spec:
       containers:
         - image: docker.elastic.co/logstash/logstash:6.3.2
@@ -70,9 +70,9 @@ metadata:
   name: logstash
 spec:
   ports:
-   - port: 5044
+    - port: 5044
  selector:
-   app: logstash
+    app:logstash
 ---
 apiVersion: v1
 kind: Service

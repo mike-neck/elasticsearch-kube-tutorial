@@ -249,9 +249,9 @@ metadata:
   name: logstash
 spec:
   ports:
-   - port: 5044
+    - port: 5044
  selector:
-   app: logstash
+    app: logstash
 ---
 apiVersion: v1
 kind: Service
