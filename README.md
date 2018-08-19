@@ -99,6 +99,8 @@ foo
 filebeat のインストール
 ---
 
+(ここからの手順の実行ディレクトリーは `filebeat-tutorial`)
+
 logstash の getting started を読んでいると、途中から filebeat が出てくるので、これもインストールする。
 これもまたローカルにバイナリーを持ちたくないので docker を使う。
 
