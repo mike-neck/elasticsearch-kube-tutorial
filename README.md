@@ -353,3 +353,8 @@ $ kubectl delete deployment filebeat
 $ kubectl delete service logstash
 $ kubectl delete deployment logstash
 ```
+
+ELK + filebeat
+---
+
+

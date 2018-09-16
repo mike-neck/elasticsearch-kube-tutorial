@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{ISO8601} [%thread] %logger{36}[%marker] - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="SHAKESPEARE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{ISO8601}&#x09;%logger{30}&#x09;%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.example.Shakespeare" level="INFO">
+        <appender-ref ref="SHAKESPEARE"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
