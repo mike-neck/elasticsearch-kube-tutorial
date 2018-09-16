@@ -1,3 +1,7 @@
 deploy-filebeat-current-directory.yml
 
 .idea/
+
+.gradle/
+build/
+out/

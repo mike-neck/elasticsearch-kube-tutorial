@@ -1,0 +1,64 @@
+plugins {
+    id 'java'
+    id "org.springframework.boot" version "2.0.5.RELEASE"
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
+    id 'com.google.cloud.tools.jib' version '0.9.10'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile('org.springframework.boot:spring-boot-starter-webflux')
+  testCompile('org.springframework.boot:spring-boot-starter-test')
+  testCompile('io.projectreactor:reactor-test')
+}
+
+jib {
+    from {
+        image = 'openjdk:10-jdk-slim'
+    }
+    to {
+        image = 'macbeth-app'
+    }
+    container {
+        ports = ['8080/tcp']
+    }
+    extraDirectory = file("$buildDir/filebeat")
+}
+
+[tasks.jib, tasks.jibDockerBuild]*.group = 'docker'
+
+class Download extends DefaultTask {
+
+    String from
+
+    @OutputFile
+    File into
+
+    @TaskAction
+    void download() {
+        def dir = into.parentFile
+        if (!dir.exists()) dir.mkdirs()
+        new FileOutputStream(into) << new URL(from).openStream()
+    }
+}
+
+task filebeat(group: 'filebeat', type: Download) {
+    from = 'https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-6.4.0-linux-x86_64.tar.gz'
+    into = file("${buildDir}/archives/filebeat.tar.gz")
+}
+
+task unArchive(group: 'filebeat', dependsOn: 'filebeat') {
+    doLast {
+        copy {
+            from tarTree(tasks.getByName('filebeat').outputs.files.singleFile)
+            into file("$buildDir/filebeat")
+        }
+    }
+}

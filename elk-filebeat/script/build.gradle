@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.example'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.jetbrains:annotations:13.0'
+    
+    compile group: 'io.projectreactor', name: 'reactor-core', version: '3.1.8.RELEASE'
+    compile group: 'org.asynchttpclient', name: 'async-http-client', version: '2.5.2'
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.6'
+
+    testCompileOnly 'org.jetbrains:annotations:13.0'
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+}
+
+test {
+    useJUnitPlatform()
+}
